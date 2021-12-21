@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body>
+  <!-- 注意单双引号问题，单（双）引号内不能嵌套单（双）引号 -->
+  <h3>Demo: vue绑定class + style</h3>
+  <div class="app" :class='{active: isActive, "text-danger": hasError}'>
+    给元素绑定className--对象形式
+    <p :class="classObj">给元素绑定className--变量形式</p>
+    <p :style="styleobject">绑定内联样式</p>
+  </div>
+
+  <h3>Demo: 使用key实现独立模块</h3>
+  <!-- 使用了不同的key,切换LoginType的时候，原本输入框的内容就会消失 -->
+  <!-- 不是key,或者设置相同的key值，切换LoginType的时候，原本输入框的内容不会消失，因为input元素复用了 -->
+  <div class="app2">
+    <template v-if="loginType === 'username'">
+      <label for="1">Username</label>
+      <input placeholder="Enter your username" key="1">
+    </template>
+    <template v-else> 
+      <label for="2">Email</label>
+      <input placeholder="Enter your email" key="1">
+    </template>
+    <button @click='handleclick'>toggle login type</button>
+  </div>
+
+  <script>
+    let app = new Vue({
+      el: '.app',
+      data: {
+        isActive: true,
+        hasError: false,
+        classObj: {
+          one: false,
+          two: true
+        },
+        styleobject: {
+          color: 'red',
+          'font-size': '30px'
+        }
+      },
+    })
+
+    let app2 = new Vue({
+      el: '.app2',
+      data: {
+        loginType: 'username'
+      },
+      methods: {
+        handleclick: function () {
+          this.loginType = this.loginType === 'username' ? 'email' : 'username' 
+        }
+      }
+    })
+  </script>
+</body>
+</html>

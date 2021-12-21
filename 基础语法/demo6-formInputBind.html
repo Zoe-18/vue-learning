@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+</head>
+
+<body>
+  <div class="app">
+    <h3>1. 本文例子</h3>
+    <input type="text" v-model='inputValue'>
+    <p>message is: {{ inputValue }}</p>
+    <hr>
+    <h3>2. 多行文本例子</h3>
+    <span>Multiline message is :</span>
+    <p style="white-space: pre-line;">{{ message }}</p>
+    <br>
+    <textarea cols="30" rows="10" v-model='message'></textarea>
+    <hr>
+    <h3>3-1. 单个复选框例子</h3>
+    <!-- 
+      官方解释：for属性规定 label 与哪个表单元素绑定
+      label中for和input元素中的id 是对应关系
+    -->
+    <input type="checkbox" v-model="checked" id='1'>
+    <label for="1">{{ checked }}</label>
+    <hr>
+    <h3>3-2. 多个复选框例子</h3>
+    <!-- 
+      注意，多个checkbox,一定要有value属性,
+      因为当你勾选了某个复选框时，你能获取的这个表单元素绑定的value属性
+     -->
+    <input type="checkbox" v-model="names" value="Rose" id='1'><label for="1">Rose</label>
+    <input type="checkbox" v-model="names" value="Lisa" id='2'><label for="2">Lisa</label>
+    <input type="checkbox" v-model="names" value="Jinne" id='3'><label for="3">Jinne</label>
+    <br>
+    <p>checked names: {{ names.length ? names : ''}}</p>
+    <br>
+    <hr>
+    <h3>4. 单选按钮例子</h3>
+    <input type="radio" v-model='onlyOne' id='one' value="one"><label for="one">One</label>
+    <input type="radio" v-model='onlyOne' id='two' value="two"><label for="two">Two</label>
+    <p>You picked: {{ onlyOne }}</p>
+    <br>
+    <hr>
+    <h3>5. 下拉框例子(可多选)</h3>
+    <select name="cities" v-model='cite' multiple>
+      <option>杭州</option>
+      <option>上海</option>
+      <option>南京</option>
+    </select>
+    <p>select you favorite city: {{ cite }} </p>
+    <br>
+    <hr>
+    <h3>6. v-model.lazy修饰符</h3>
+    <input type="text" v-model.lazy="lazyMessage">
+    <p>输出message: {{ lazyMessage }}</p>
+    <hr>
+    <h3>7. v-model.number修饰符</h3>
+    <input type="number" v-model.number="age">
+    <p>你的年龄是: {{ age }}</p>
+    <hr>
+    <h3>8. v-model.trim 修饰符</h3>
+    <input type="text" v-model.trim="word">
+    <p>输入的句子去除收尾空格: {{ word }}</p>
+  </div>
+
+  <script>
+    let vm = new Vue({
+      el: '.app',
+      data: {
+        inputValue: '',
+        message: '',
+        checked: false,
+        names: [],
+        onlyOne: 'one',
+        cite: [],
+        lazyMessage: '',
+        age: null,
+        word: '',
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="https://unpkg.com/pikaday@1.7.0"></script>
+
+</head>
+
+<body>
+  <div class="app">
+    <h3>1. ref举例</h3>
+    <input type="date" ref='dateInput' v-model="date">
+    <h3>2. 待解决问题……循环引用的例子引发报错！</h3>
+    <tree-folder :folder="folder" />
+  </div>
+
+  <script>
+    Vue.component('tree-folder', {
+      props: ['folder'],
+      template: `   
+        <p>
+          <span>{{ folder.name }}</span>
+          <tree-folder-contents  :children="folder.children" />
+        </p>`
+    })
+    Vue.component('tree-folder-contents', {
+      prop: ['children'],
+      template: `
+          <ul>
+            <li v-for="child in children">
+              <tree-folder v-if="child.children" :folder="child"/>
+              <span v-else>{{ child.name }}</span>
+            </li>
+          </ul>`,
+    })
+
+    let vm1 = new Vue({
+      el: '.app',
+      data: {
+        date: '',
+        folder: {
+          name: 'A',
+          children: [
+            {
+              name: 'A-1',
+              children: [
+                {
+                  name: 'A-1-1',
+                  children: []
+                },
+              ]
+            },
+            {
+              name: 'A-2',
+              children: [
+                {
+                  name: 'A-2-1',
+                  children: []
+                },
+                {
+                  name: 'A-2-2',
+                  children: [
+                    {
+                      name: 'A-2-2-1',
+                      children: []
+                    }
+                  ]
+                },
+              ]
+            }
+          ]
+        }
+      },
+      computed: {
+        focus: function () {
+          console.log('this.#refs.dateInput ===> ', this.$refs.input)
+        }
+      },
+      mounted: function () {
+        var picker = new Pikaday({
+          field: this.$refs.dateInput,
+          format: "YYYY-MM-DD"
+        })
+        this.$once('hook:beforeDestory', function () {
+          picker.destory()
+        })
+      }
+    })
+  </script>
+</body>
+
+</html>

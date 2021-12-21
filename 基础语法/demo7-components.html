@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+</head>
+
+<body>
+  <div class="app">
+    <h3>1. 自定义的全局组件，并通过props传值</h3>
+    <!-- 通过props给组件传递值，是不需要v-bind绑定的 -->
+    <button-counter title="按钮1"></button-counter>
+    <button-counter title="按钮2"></button-counter>
+    <button-counter title="按钮3"></button-counter>
+  </div>
+
+  <div class="app-2">
+    <h3>2. 博文组件</h3>
+    <blog-post v-for="post in posts" :title="post.title" :key='post.id'></blog-post>
+    <hr>
+    <h3>2. 进阶版博文组件(能显示更多的信息)</h3>
+    <blog-post-2 v-for="post in posts2" :post="post" :key='post.id'></blog-post-2>
+    <h3>3. 批量改变博文字体大小</h3>
+    <div :style="{ fontSize: postFontSize + 'em' }">
+      <blog-post v-for="post in posts" :title="post.title" :key='post.id'></blog-post>
+    </div>
+    <h3>4. 可独立改变博文字体大小</h3>
+    <div>
+      <blog-post-3 v-for="post in posts2" :post="post" :key='post.id' @enlarge-text="post.postFontSize += 0.1">
+      </blog-post-3>
+    </div>
+  </div>
+
+  <div class="app-3">
+    <h3>5. 自定义组件绑定 v-model</h3>
+    <custom-input v-model='searchText'></custom-input>
+    <h3>6. 插槽插入内容</h3>
+    <slot-demo>杭州电子科技大学，欢迎你！</slot-demo>
+  </div>
+
+  <script>
+    let message = 121321
+    // 按钮计时器组件
+    Vue.component('button-counter', {
+      data: function () {
+        return {
+          count: 0,
+        }
+      },
+      props: ['title'],
+      template: `<button @click="count++">You clicked {{ title }} {{ count }} times !</button>`,
+    })
+    // 博文组件
+    Vue.component('blog-post', {
+      props: ['title'],
+      template: `<p>{{ title }}</p>`,
+    })
+    // 进阶版博文组件
+    Vue.component('blog-post-2', {
+      props: ['post'],
+      template: `<div>
+      <span style="font-size:28px">{{ post.content }}</span> <span style="margin-left: 30px">{{ post.time }}</span> </div>`,
+    })
+    // 博文后面加上按钮
+    // todo:这里需要注意，如果在一个字符串中使用变量去控制样式，直接给元素加上style属性是不行，
+    // 必须给元素绑定style属性，这样里面的字符串被被Vue编译
+    Vue.component('blog-post-3', {
+      props: ['post',],
+      template: `
+        <div>
+          postFontSize = {{ post.postFontSize.toFixed(1) }}
+          <br>
+          <span :style="{fontSize:post.postFontSize.toFixed(1)+'em' }">{{ post.content }} </span>
+          <span style="margin-left: 30px">{{ post.time }}</span>  
+          <button @click="$emit('enlarge-text')">enlarge fontSize</button>
+        </div>`,
+    })
+
+    let vm = new Vue({
+      el: '.app',
+    })
+
+    let vm2 = new Vue({
+      el: '.app-2',
+      data: {
+        posts: [
+          { id: 1, title: 'My journey with Vue' },
+          { id: 2, title: 'Blogging with Vue' },
+          { id: 3, title: 'Why Vue is so fun' }
+        ],
+        posts2: [
+          { id: 4, content: 'My journey with Vue', time: '2021-11-10', postFontSize: 1 },
+          { id: 5, content: 'Blogging with Vue', time: '2021-11-19', postFontSize: 1 },
+          { id: 6, content: 'Why Vue is so fun', time: '2021-12-10', postFontSize: 1 }
+        ],
+        postFontSize: 1,
+        postFontSize2: 1,
+        color: 'red'
+      }
+    })
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // 官方原话:为了使得自定义组件生效，内部input的value属性必须绑到一个名叫value的prop上，
+    Vue.component('custom-input', {
+      props: ['value'],
+      template: `
+        <div>
+          <label for='name'>一个输入框</label>
+          <input id="name" :value="value" @input="$emit('input', $event.target.value)"></input>
+          <p>你的名字是： {{ value }}</p>
+          </div>
+      `
+    })
+    // 在<slot-demo></slot-demo>中间写入一些东西就相当取代了<slot></slot>
+    Vue.component('slot-demo', {
+      props:[],
+      template: `
+        <div>
+          <strong>Error</strong>
+          <slot></slot>
+        </div>
+      `
+    })
+    let vm3 = new Vue({
+      el: '.app-3',
+      data: {
+        searchText: ''
+      }
+    })
+
+  </script>
+</body>
+
+</html>

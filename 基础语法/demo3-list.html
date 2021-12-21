@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body>
+  <h3>Demo1： v-for 遍历数组</h3>
+  <div class="app">
+    <ul>
+      <li v-for="item in items" :key='item.id'> 
+        {{ item.message }}
+      </li>
+    </ul>
+  </div>
+
+  <h3>Demo2： v-for 遍历对象,(value, name) in items 顺序不能更改！！ </h3>
+  <div class="app-2">
+    <ul>
+      <li v-for="(value, name) in items" :key='value'> 
+        {{ name }} : {{ value }}
+      </li>
+    </ul>
+  </div>
+  <h3>Demo3: v-for接受整数，表示把模板重复对应次数</h3>
+  <div class="app-3">
+    <span v-for="n in 10">{{ n }}</span>
+  </div>
+
+  <script>
+    var vm1 = new Vue({
+      el: '.app',
+      data:　{
+        items: [
+          {id: 1, message: 'apple' },
+          {id: 2, message: 'pear' },
+          {id: 3, message: 'bannan' }
+        ]
+      }
+    })
+    var vm2 = new Vue({
+      el: '.app-2',
+      data:　{
+        items: {
+          name: 'ganyinlan',
+          age:  19,
+          sex: 'female',
+        }
+      }
+    })
+    var vm3 = new Vue({
+      el: '.app-3',
+    })
+  </script>
+</body>
+</html>

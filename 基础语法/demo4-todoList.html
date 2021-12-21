@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+
+<body>
+  <div class="root">
+    <label for="todo">Add a todo</label>
+    <input type="text" name="todo" v-model='current' placeholder='E.g. Feed the cat'>
+    <button @click="handleAddTodo">Add</button>
+    <ul v-if="todos.length">
+      <li v-for="(todo, index) in todos">
+        <span>{{ todo }} </span> <button @click='handleRemoveTodo(index)'> Remove</button>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    let vm = new Vue({
+      el: '.root',
+      data: {
+        todos: [
+          'do the dishes',
+          'take out the trash',
+          'mow ths lawn'
+        ],
+        current: '',
+      },
+      methods: {
+        handleAddTodo: function () {
+          if (this.current) {
+            this.todos.push(this.current)
+            this.current = ""
+          }
+        },
+        handleRemoveTodo: function (index) {
+          this.todos.splice(index, 1)
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

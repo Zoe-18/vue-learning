@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+</head>
+
+<body>
+  <div class="app">
+    <button @click="handleAdd">Add 1</button>
+    <p>this button has already been clicked {{ count }} times</p>
+    <button @click="handleopen">点击召唤神龙</button>
+    <button @click="warn('this is a bad news', $event)">利用$evenet访问原始的DOM 事件</button>
+    <div> 输入回车键触发<input type="text" @keyup.enter="submit"> </div>
+    <div> 输入空格键触发<input type="text" @keyup.space="space"> </div>
+    <div> 按向上键触发<input type="text" @keyup.up="handleKeyUpAction"> </div>
+    <!-- 注意这个Ctrl的检测，必须搭配别的键才可以， -->
+    <hr />
+    <div> 系统修饰符ctrl<input type="text" @keyup.ctrl="handleCtrlKey"> Do something </div>
+    <!--todo: 需要实现  click+ctrl键----》弹窗显示10；
+      https://cn.vuejs.org/v2/guide/events.html
+      ps: 17是ctrl的keyCode -->
+    <div @keyCode:keyup.17="hint()"> Do something </div>  
+    <h3>鼠标按钮修饰符</h3>
+    <hr />
+    <p @mousedown.left="mouseLeftClick">你点我看看会出现什么呀，有惊喜的哦！</p>
+    <p @mousedown.right="mouseRightClick">你点我看看会出现什么呀，有惊喜的哦！</p>
+  </div>
+
+
+
+  <script>
+    let vm1 = new Vue({
+      el: '.app',
+      data: {
+        count: 1
+      },
+      methods: {
+        handleAdd: function () {
+          this.count += 1
+        },
+        handleopen: function (event) {
+          alert('hello Vue.js!')
+          if (event) {
+            console.log('event', event.target.tagName)
+          }
+        },
+        warn: function (message, event) {
+          if (event) {
+            event.preventDefault()
+          }
+          alert(message)
+        },
+        submit: function () {
+          console.log('输入回车了')
+        },
+        space: function () {
+          console.log('存在空格键')
+        },
+        handleKeyUpAction: function() {
+          console.log('按下键盘')
+        },
+        handleCtrlKey: function() {
+          console.log('输入Ctrl了')
+        },
+        hint: function() {
+          alert(10)
+        },
+        mouseLeftClick: function() {
+          console.log('点击鼠标左键')
+        },
+        mouseRightClick: function() {
+          console.log('点击鼠标右键')
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

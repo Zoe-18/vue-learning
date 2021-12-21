@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="https://unpkg.com/vue"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+
+<body>
+    <h3>这是第一个Demo</h3>
+    <div id="app">
+        {{ message }}
+    </div>
+    <h3>这是第二个Demo v-bind</h3>
+    <div id="app-2" v-bind:title='message'>
+        <span>
+            鼠标悬停几秒钟显示当前时间
+        </span>
+    </div>
+    <h3>这是第三个Demo v-if</h3>
+    <div class="app-3">
+        <p v-if='flag'>现在你可以看到我了</p>
+    </div>
+    <h3>这是第四个Demo v-for列表</h3>
+    <div class="app-4">
+        <ol>
+            <li v-for="todo in todos">
+                {{ todo.text }}
+            </li>
+        </ol>
+    </div>
+    <h3>这是第五个Demo v-on</h3>
+    <div id="app-5">
+        <p>{{ message }}</p>
+        <input type="text" placeholder="请输入你的姓名" v-on:change="handleChange" />
+        <button v-on:click="showHint">开启提示</button>
+        <button v-on:click="reverseMessage">反转message</button>
+    </div>
+    <h3>这是第六个Demo v-model表单的双向绑定</h3>
+    <div class="app-6">
+        <p> message = {{ message }}</p>
+        <input type="text" v-model='message'>
+    </div>
+    <h3>这是第七个Demo 组件编写</h3>
+    <div class="app-7">
+        <ol>
+            <!-- v-for绑定的组件，必须搭配key -->
+            <todo-item v-for="item in groceryList" v-bind:todo='item' v-bind:key='item.id'>
+            </todo-item>
+        </ol>
+    </div>
+    <h3>这是第八个Demo v-once插值</h3>
+    <div class="app-8">
+        <p >未使用v-once : message = {{ message }}</p>
+        <p v-once>使用了v-once :message = {{ message }}</p>
+    </div>
+    <h3>这是第九个Demo v-html指令显示原始html</h3>
+    <div class="app-9">
+        <p>Using 双括号插值：{{ rawHtml }}</p>
+        <p>Using v-html 指定：<span v-html="rawHtml"></span> </p>
+    </div>
+    <h3>这是第十个Demo 测试布尔值的attribute</h3>
+    <div class="app-10">
+        <!-- 如果 isButtonDisabled 的值是 null、undefined 或 false，
+            则 disabled attribute甚至不会被包含在渲染出来的 <button> 元素中。 -->
+        <button v-bind:disabled="isButtonDisabled" @click='handleClick'>失效的按钮</button>
+    </div>
+    <!-- 函数式组件：无响应式数据，没有this上下文 -->
+    <!-- Vue的模板会被编译成为渲染函数 -->
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'hello Vue!'
+            }
+        })
+        var app2 = new Vue({
+            el: '#app-2',
+            data: {
+                message: `页面被触发了！当前时间是${new Date().toLocaleString()}`
+            }
+        })
+        var app3 = new Vue({
+            el: '.app-3',
+            data: {
+                flag: true
+            }
+        })
+        var app4 = new Vue({
+            el: '.app-4',
+            data: {
+                todos: [
+                    { text: 'work' },
+                    { text: 'playing ball' },
+                    { text: 'sleeping' },
+                    { text: 'hua shui' }
+                ]
+            }
+        })
+        var app5 = new Vue({
+            el: '#app-5',
+            data: {
+                message: 'hello vue!'
+            },
+            methods: {
+                showHint: function () {
+                    console.log('this is a hint message!')
+                },
+                handleChange: function () {
+                    console.log('输入框的值发生了改动！')
+                },
+                reverseMessage: function () {
+                    this.message = this.message.split('').reverse().join('')
+                }
+            }
+        })
+        var app6 = new Vue({
+            el: '.app-6',
+            data: {
+                message: 'hello vue123! '
+            }
+        })
+
+        // 定义一个全局组件 todo-item 
+        Vue.component('todo-item', {
+            props: ['todo'],
+            template: `<li>{{ todo.text }}</li>`
+        })
+        var app7 = new Vue({
+            el: '.app-7',
+            data: {
+                groceryList: [
+                    { id: 0, text: '蔬菜' },
+                    { id: 1, text: '水果' },
+                    { id: 2, text: '牛奶' }
+                ]
+            }
+        })
+        var app8 = new Vue({
+            el: '.app-8',
+            data: {
+                message: '能改动吗123'
+            }
+        })
+        var app9 = new Vue({
+            el: '.app-9',
+            data: {
+                rawHtml: '<span style="color: red"> this should be red! </span>'
+            }
+        })
+        var app10 = new Vue({
+            el: '.app-10',
+            data: {
+                isButtonDisabled: 'adev'
+            },
+            methods: {
+                handleClick: function(){
+                    console.log('you click the button!')
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

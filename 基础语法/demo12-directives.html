@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+</head>
+<body>
+  <div class="app">
+    <h3>1. 自定义自动聚焦的指令</h3>
+    <label>原生的input</label><input type="text" ><br>
+    <label>绑定自定义指定的input</label><input v-focus />
+    <custom-button />
+    <h3>2. 指令的自定义钩子Demo</h3>
+    <!-- 这里指令名字后紧跟:foo -->
+    <p v-demo:foo.a.b="message"></p>
+  </div>
+  <script>
+    // 注册一个全局自定义指令
+    Vue.directive('focus', {
+      inserted: function(el){
+        el.focus()
+      }
+    })
+    // 自定义组件内部 注册一个局部自定义指令
+    Vue.component('custom-button', {
+      directives: {
+        focus: {
+          // 指令的定义
+          inserted: function(el) {
+            el.focus()
+          }
+        }
+      },
+      template: `
+        <div>
+          <label>在组件内注册的局部自定义指令</label><input v-focus></input>
+        </div>
+      `
+    })
+
+    Vue.directive('demo', {
+      bind: function(el, binding, vnode){
+        let s = JSON.stringify
+        el.innerHTML = 
+          'name: ' + s(binding.name) + '<br>' + 
+          'value: ' + s(binding.value) +'<br>' +
+          'expression: ' + s(binding.expression) + '<br>' +
+          'argument: '   + s(binding.arg) + '<br>' +
+          'modifiers: '  + s(binding.modifiers) + '<br>' +
+          'vnode keys: ' + Object.keys(vnode).join(', ')
+      }
+    })
+    new Vue({
+      el: '.app',
+      data: {
+        message: 'hello!'
+      },
+    })
+  </script>
+</body>
+</html>
