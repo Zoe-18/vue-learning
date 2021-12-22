@@ -38,7 +38,8 @@ thumbs.db
 .CVS  
 .idea  
 # 忽略所有目录下的node_modules 
-*node_modules/*  
+*node_modules/*
+node_modules/  
 jscoverage_lib/    
 bower_components/  
 dist/  
