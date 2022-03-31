@@ -1,0 +1,25 @@
+{
+  "name": "vue-scaffold-by-myself",
+  "version": "1.0.0",
+  "description": "1. 使用vue脚手架`vue-cli`创建一个项目（目的：了解脚手架做了些什么工作）",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vue": "^2.6.14"
+  },
+  "devDependencies": {
+    "css-loader": "^2.1.1",
+    "html-webpack-plugin": "^4.5.2",
+    "style-loader": "^3.3.1",
+    "vue-loader": "^14.2.4",
+    "vue-template-compiler": "^2.6.14",
+    "webpack": "^4.46.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
+  }
+}
